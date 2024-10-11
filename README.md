@@ -5,3 +5,5 @@
 # Практика №6
 
 ![alt_text](https://github.com/RogaJedi/flat_6/blob/master/flat_6-demo-1.gif)
+
+![alt_text](https://github.com/RogaJedi/flat_6/blob/master/flat_6-demo-2.gif)
