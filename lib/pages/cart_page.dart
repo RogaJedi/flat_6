@@ -3,23 +3,25 @@ import '../notes.dart';
 import '../game_page.dart';
 
 class CartPage extends StatelessWidget {
-  final Function(Note) onDeleteProduct;
+  final List<Note> baseNotes;
   final Set<Note> cartGames;
   final Set<Note> likedGames;
   final Function(Note) onLikedToggle;
   final Function(Note) onAddToCart;
   final Function(Note) onRemoveFromCart;
   final Function(Note) onDeleteFromCart;
+  final Function(Note) onDeleteProduct;
 
   const CartPage({
     Key? key,
-    required this.onDeleteProduct,
+    required this.baseNotes,
     required this.cartGames,
     required this.likedGames,
     required this.onLikedToggle,
     required this.onAddToCart,
     required this.onRemoveFromCart,
     required this.onDeleteFromCart,
+    required this.onDeleteProduct,
   }) : super(key: key);
 
 

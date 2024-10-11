@@ -5,22 +5,22 @@ import '../notes.dart';
 import '../add_game.dart';
 
 class HomePage extends StatefulWidget {
-  final Function(Note) onDeleteProduct;
   final List<Note> baseNotes;
   final Set<Note> likedGames;
   final Set<Note> cartGames;
   final Function(Note) onLikedToggle;
   final Function(Note) onAddCart;
+  final Function(Note) onDeleteProduct;
 
 
   const HomePage({
     Key? key,
-    required this.onDeleteProduct,
     required this.baseNotes,
     required this.likedGames,
     required this.cartGames,
     required this.onLikedToggle,
     required this.onAddCart,
+    required this.onDeleteProduct,
   }) : super(key: key);
 
   @override

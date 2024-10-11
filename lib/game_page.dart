@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'notes.dart';
 
 class GamePage extends StatefulWidget {
-  final Function(Note) onDeleteProduct;
   final Note gameNote;
   final Set<Note> cartGames;
   final Set<Note> likedGames;
   final Function(Note) onAddCart;
   final Function(Note) onLikedToggle;
+  final Function(Note) onDeleteProduct;
 
   const GamePage({
     Key? key,
-    required this.onDeleteProduct,
     required this.gameNote,
     required this.cartGames,
     required this.likedGames,
     required this.onAddCart,
     required this.onLikedToggle,
+    required this.onDeleteProduct,
+
   }) : super(key: key);
 
 
@@ -25,7 +26,6 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

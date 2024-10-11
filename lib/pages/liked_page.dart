@@ -4,19 +4,21 @@ import '../board_game_card.dart';
 import '../game_page.dart';
 
 class LikedPage extends StatelessWidget {
-  final Function(Note) onDeleteProduct;
+  final List<Note> baseNotes;
   final Set<Note> likedGames;
   final Set<Note> cartGames;
   final Function(Note) onLikedToggle;
   final Function(Note) onAddCart;
+  final Function(Note) onDeleteProduct;
 
   const LikedPage({
     Key? key,
-    required this.onDeleteProduct,
+    required this.baseNotes,
     required this.likedGames,
     required this.cartGames,
     required this.onLikedToggle,
     required this.onAddCart,
+    required this.onDeleteProduct,
   }) : super(key: key);
 
   @override

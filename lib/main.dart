@@ -123,28 +123,30 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final List<Widget> _pages = [
       HomePage(
-        onDeleteProduct: _deleteProduct,
         baseNotes: baseNotes,
         likedGames: likedGames,
         cartGames: cartGames,
         onLikedToggle: _toggleFavorite,
         onAddCart: _addToCart,
+        onDeleteProduct: _deleteProduct,
       ),
       LikedPage(
-        onDeleteProduct: _deleteProduct,
+        baseNotes: baseNotes,
         likedGames: likedGames,
         cartGames: cartGames,
         onLikedToggle: _toggleFavorite,
         onAddCart: _addToCart,
+        onDeleteProduct: _deleteProduct,
       ),
       CartPage(
-        onDeleteProduct: _deleteProduct,
+        baseNotes: baseNotes,
         cartGames: cartGames,
         likedGames: likedGames,
         onAddToCart: _addToCart,
         onLikedToggle: _toggleFavorite,
         onRemoveFromCart: _removeFromCart,
         onDeleteFromCart: _deleteFromCart,
+        onDeleteProduct: _deleteProduct,
       ),
       const ProfilePage(),
     ];
