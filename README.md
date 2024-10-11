@@ -12,7 +12,7 @@
 
 ![alt_text](https://github.com/RogaJedi/flat_6/blob/master/flat_6-demo-2.gif)
 
-Удаление товара из доступных на странице товара (кнопка добавления в избранное так же работает оттуда
+Удаление товара из доступных на странице товара (кнопка добавления в избранное так же работает оттуда же)
 
 ![alt_text](https://github.com/RogaJedi/flat_6/blob/master/flat_6-demo-3.gif)
 
