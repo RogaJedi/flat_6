@@ -4,51 +4,9 @@ import '../game_page.dart';
 import '../notes.dart';
 import '../add_game.dart';
 
-final Note Sample1 = Note(
-  name: 'Каркассон',
-  text: 'Настольная игра про строительство города.',
-  imageUrl:
-  'images/Karkasson.jpg',
-  fullinfo:
-  'Настольная игра "Каркассон" пользуется славой одной из лучших настольных игр мира. В чём превосходство "Каркассона"? В простых правилах, в многообразии партий, в их небольшой продолжительности, в отсутствии открытой конфронтации между игроками – это классический образец игры "в германском стиле".',
-  cost: 1399,
-  amount: 0,
-);
-
-final Note Sample2 = Note(
-  name: 'Unmatched',
-  text: 'Настольная игра про сражения легенд.',
-  imageUrl:
-  'images/UnMatched.jpg',
-  fullinfo:
-  'Мифологические персонажи, герои мультфильмов и художественной литературы появляются на одном поле для сражения! "Unmatched. Битва Легенд" – игра с простыми правилами, воплощающая в реальность детские фантазии о невозможных встречах вымышленных героев из разных вселенных. Каждый том содержит в себе карты с новыми персонажами, которые можно мешать с колодами из других серий.',
-  cost: 3199,
-  amount: 0,
-);
-
-final Note Sample3 = Note(
-  name: 'Подземелья и пёсики',
-  text: 'Настольная игра про побег из подземелья.',
-  imageUrl:
-  'images/p_and_p.jpg',
-  fullinfo:
-  'Добро пожаловать на состязание по побегу из подземелья! Нашим смелым хорошим мальчикам и девочкам предстоит спуститься в очень глубокие помещения (мы не знаем, кто их вырыл) и дать отпор страшным монстрам! Но наши участники не простые пёсики, а самые настоящие приключенцы. Кто из них соберёт больше всего вкусняшек и первым покинет мрачное подземелье?',
-  cost: 899,
-  amount: 0,
-);
-
-final Note Sample4 = Note(
-  name: 'Мастера Пламени',
-  text: 'Настольная игра про дракончиков.',
-  imageUrl:
-  'images/flamecraft.jpg',
-  fullinfo:
-  'Мастера Пламени — это очаровательные маленькие драконы, которые живут в небольшом городке в мире и согласии с людьми. Каждый игрок берёт на себя роль волшебника, который понимает язык этих удивительных созданий, а значит, может помочь городу процветать!',
-  cost: 4499,
-  amount: 0,
-);
-
 class HomePage extends StatefulWidget {
+  final Function(Note) onDeleteProduct;
+  final List<Note> baseNotes;
   final Set<Note> likedGames;
   final Set<Note> cartGames;
   final Function(Note) onLikedToggle;
@@ -57,6 +15,8 @@ class HomePage extends StatefulWidget {
 
   const HomePage({
     Key? key,
+    required this.onDeleteProduct,
+    required this.baseNotes,
     required this.likedGames,
     required this.cartGames,
     required this.onLikedToggle,
@@ -68,7 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Note> notes = [Sample1, Sample2, Sample3, Sample4];
 
   void _navigateToAddNoteScreen(BuildContext context) async {
     final result = await Navigator.push(
@@ -79,14 +38,14 @@ class _HomePageState extends State<HomePage> {
 
     if (result != null && result.isNotEmpty) {
       setState(() {
-        notes.add(result);
+        widget.baseNotes.add(result);
       });
     }
   }
 
   void addNewNote(Note newNote) {
     setState(() {
-      notes.add(newNote);
+      widget.baseNotes.add(newNote);
     });
   }
 
@@ -97,28 +56,31 @@ class _HomePageState extends State<HomePage> {
         title: Text('Настольные Игры'),
       ),
       body: Scrollbar(
-        child: notes.isEmpty
-            ? Center(child: Text('Пока что тут пусто, добавьте что-нибудь!'))
+        child: widget.baseNotes.isEmpty
+            ? const Center(child: Text('Пока что тут пусто, добавьте что-нибудь!'))
             : GridView.builder(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // Количество столбцов в сетке
             crossAxisSpacing: 8.0,
             mainAxisSpacing: 8.0,
             childAspectRatio: 0.59, // Соотношение сторон элементов
           ),
-          itemCount: notes.length,
+          itemCount: widget.baseNotes.length,
           itemBuilder: (context, index) {
-            final note = notes[index];
+            final note = widget.baseNotes[index];
             return GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => GamePage(
+                      onDeleteProduct: widget.onDeleteProduct,
                       gameNote: note,
                       cartGames: widget.cartGames,
+                      likedGames: widget.likedGames,
                       onAddCart: widget.onAddCart,
+                      onLikedToggle: widget.onLikedToggle,
                     ),
                   ),
                 );
@@ -129,9 +91,9 @@ class _HomePageState extends State<HomePage> {
                     gameNote: note,
                   ),
                   const Positioned(
-                    top: 17.25,
-                    right: 17,
-                    child: Icon(Icons.favorite, color: Colors.black, size: 30,)
+                    top: 20,
+                    right: 20,
+                    child: Icon(Icons.favorite, color: Colors.white,)
                   ),
                   Positioned(
                     top: 8,
@@ -140,10 +102,10 @@ class _HomePageState extends State<HomePage> {
                       icon: Icon(
                         widget.likedGames.contains(note)
                             ? Icons.favorite
-                            : Icons.favorite,
+                            : Icons.favorite_border,
                         color: widget.likedGames.contains(note)
                             ? Colors.red
-                            : Colors.white,
+                            : Colors.black,
                       ),
                       onPressed: () {
                         widget.onLikedToggle(note);

@@ -3,14 +3,20 @@ import '../notes.dart';
 import '../game_page.dart';
 
 class CartPage extends StatelessWidget {
+  final Function(Note) onDeleteProduct;
   final Set<Note> cartGames;
+  final Set<Note> likedGames;
+  final Function(Note) onLikedToggle;
   final Function(Note) onAddToCart;
   final Function(Note) onRemoveFromCart;
   final Function(Note) onDeleteFromCart;
 
   const CartPage({
     Key? key,
+    required this.onDeleteProduct,
     required this.cartGames,
+    required this.likedGames,
+    required this.onLikedToggle,
     required this.onAddToCart,
     required this.onRemoveFromCart,
     required this.onDeleteFromCart,
@@ -25,7 +31,9 @@ class CartPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Корзина'),
       ),
-      body: Stack(
+      body: cartGamesList.isEmpty
+        ? const Center(child: Text("Добавьте что-то в корзину!"),)
+        : Stack(
         children: [
           ListView.builder(
             itemCount: cartGamesList.length,
@@ -37,9 +45,12 @@ class CartPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => GamePage(
+                        onDeleteProduct: onDeleteProduct,
                         gameNote: note,
                         cartGames: cartGames,
+                        likedGames: likedGames,
                         onAddCart: onAddToCart,
+                        onLikedToggle: onLikedToggle,
                       ),
                     ),
                   );
@@ -94,8 +105,7 @@ class CartPage extends StatelessWidget {
                                                         mainAxisSize: MainAxisSize
                                                             .min,
                                                         children: [
-                                                          Text(
-                                                              "Вы хотите удалить этот товар?"),
+                                                          const Text("Вы хотите удалить этот товар?"),
                                                           const SizedBox(
                                                               height: 10),
                                                           Row(
@@ -220,17 +230,17 @@ class CartPage extends StatelessWidget {
             },
           ),
           Positioned(
-              left: 0,
-              right: 0,
-              bottom: kBottomNavigationBarHeight - 55,
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Color(0xff007500),
-                child: Text(
-                  'Итого: ${total} P',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
+            left: 0,
+            right: 0,
+            bottom: kBottomNavigationBarHeight - 55,
+            child: Container(
+              padding: EdgeInsets.all(16),
+              color: Color(0xff007500),
+              child: Text(
+                'Итого: ${total} P',
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
+            ),
           )
         ],
       ),

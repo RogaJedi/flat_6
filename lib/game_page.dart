@@ -1,41 +1,131 @@
 import 'package:flutter/material.dart';
 import 'notes.dart';
 
-class GamePage extends StatelessWidget {
+class GamePage extends StatefulWidget {
+  final Function(Note) onDeleteProduct;
   final Note gameNote;
   final Set<Note> cartGames;
+  final Set<Note> likedGames;
   final Function(Note) onAddCart;
+  final Function(Note) onLikedToggle;
 
   const GamePage({
     Key? key,
+    required this.onDeleteProduct,
     required this.gameNote,
     required this.cartGames,
+    required this.likedGames,
     required this.onAddCart,
+    required this.onLikedToggle,
   }) : super(key: key);
+
+
+  @override
+  _GamePageState createState() => _GamePageState();
+}
+
+class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(gameNote.name),
+        title: Text(widget.gameNote.name),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: SizedBox(
+                      height: 120,
+                      width: 100,
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text("Вы хотите удалить этот товар?"),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    widget.onDeleteProduct(widget.gameNote);
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Да"),
+                                ),
+                                const SizedBox(width: 6),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Close the dialog
+                                  },
+                                  child: Text("Нет"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            tooltip: 'Удалить товар',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(gameNote.imageUrl),
+            Stack(
+              children: [
+                Image.asset(widget.gameNote.imageUrl),
+                const Positioned(
+                    top: 20,
+                    right: 20,
+                    child: Icon(Icons.favorite, color: Colors.white,)
+                ),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: IconButton(
+                    icon: Icon(
+                      widget.likedGames.contains(widget.gameNote)
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: widget.likedGames.contains(widget.gameNote)
+                          ? Colors.red
+                          : Colors.black,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        widget.onLikedToggle(widget.gameNote);
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    gameNote.text,
+                    widget.gameNote.text,
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    gameNote.fullinfo,
+                    widget.gameNote.fullinfo,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 16),
@@ -49,7 +139,7 @@ class GamePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onPressed:() => onAddCart(gameNote),
+                      onPressed:() => widget.onAddCart(widget.gameNote),
                       child: const FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
@@ -61,8 +151,6 @@ class GamePage extends StatelessWidget {
                         ),
                       ),
                     ),
-
-
                   ),
                 ],
               ),

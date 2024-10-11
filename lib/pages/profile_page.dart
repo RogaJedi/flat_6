@@ -1,12 +1,42 @@
 import 'package:flutter/material.dart';
+import '../edit_profile_page.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
-  final String name = 'Колпащиков Иван Михайлович';
-  final String group = 'ЭФБО-03-22';
-  final String phoneNumber = '+7 (888) 999-00-11';
-  final String email = 'mail@mail.mail';
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+  String name = 'Колпащиков Иван Михайлович';
+  String group = 'ЭФБО-03-22';
+  String phoneNumber = '+7 (888) 999-00-11';
+  String email = 'mail@mail.mail';
+
+  void _navigateToEditProfile() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfilePage(
+          name: name,
+          group: group,
+          phoneNumber: phoneNumber,
+          email: email,
+        ),
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        name = result['name'];
+        group = result['group'];
+        phoneNumber = result['phoneNumber'];
+        email = result['email'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +71,11 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _navigateToEditProfile,
+        child: Icon(Icons.edit),
+        tooltip: 'Добавить игру',
       ),
     );
   }
